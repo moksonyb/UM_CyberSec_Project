@@ -2,8 +2,8 @@ import { json } from '@sveltejs/kit';
 import Database from 'better-sqlite3';
 import type { RequestHandler } from './$types';
 
-// Initialize SQLite database
-const db = new Database('users.db');
+const DB_PATH = process.env.DB_PATH || 'users.db';
+const db = new Database(DB_PATH);
 
 // Create users table if it doesn't exist (vulnerable schema)
 db.exec(`
