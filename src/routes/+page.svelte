@@ -1,14 +1,37 @@
-<script>
+<script lang="ts">
   let email = '';
   let password = '';
   let isLoading = false;
   let error = '';
   let isSignup = false;
 
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+    return re.test(String(email).toLowerCase());
+  };
+
+  const isStrongPassword = (password: string) => {
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongPasswordRegex.test(password);
+  };
+
   const handleSubmit = async () => {
     isLoading = true;
     error = '';
-    
+
+    // Validate email and password
+    if (!validateEmail(email)) {
+      error = 'Please enter a valid email address.';
+      isLoading = false;
+      return;
+    }
+
+    if (!isStrongPassword(password)) {
+      error = 'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.';
+      isLoading = false;
+      return;
+    }
+
     try {
       const response = await fetch(`/api/login`, {
         method: isSignup ? 'PUT' : 'POST',
@@ -30,7 +53,7 @@
       password = '';
       
     } catch (err) {
-      error = /** @type {Error} */ (err).message;
+      error = (err as Error).message;
     } finally {
       isLoading = false;
     }
