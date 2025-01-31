@@ -10,6 +10,11 @@
     return re.test(String(email).toLowerCase());
   };
 
+  const isStrongPassword = (password: string) => {
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongPasswordRegex.test(password);
+  };
+
   const handleSubmit = async () => {
     isLoading = true;
     error = '';
@@ -21,8 +26,8 @@
       return;
     }
 
-    if (password.length < 8) {
-      error = 'Password must be at least 8 characters long.';
+    if (!isStrongPassword(password)) {
+      error = 'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.';
       isLoading = false;
       return;
     }
