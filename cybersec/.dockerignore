@@ -1,9 +1,0 @@
-node_modules
-npm-debug.log
-.DS_Store
-.env
-.git
-.gitignore
-*.db
-build
-.svelte-kit 
